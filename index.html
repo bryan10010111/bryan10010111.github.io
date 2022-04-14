@@ -1,30 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="utf-8">
     <title>Cast CAF Receiver</title>
-    <script src="//www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js"></script>
   </head>
 
-  <body style="background-color:black;">
-
-    <video id="player" 
-      src="https://storage.googleapis.com/cpe-sample-media/content/big_buck_bunny/prog/big_buck_bunny_prog.mp4"
-      type="video/mp4">
-    </video>
-
-    <script>
-      function initPlayer(){
-        // get player reference
-        var player = document.getElementById('player');
-        // hide built in controller
-        player.controls = false;
-        //player.load();
-        player.play();
-      }
-
-      window.onload = initPlayer();
-    </script>
+  <body style="background-color:gray;">
   </body>
   
 </html>
