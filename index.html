@@ -6,7 +6,7 @@
     <script src="//www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js"></script>
   </head>
 
-  <body>
+  <body style="background-color:black;">
 
     <video id="player" 
       src="https://storage.googleapis.com/cpe-sample-media/content/big_buck_bunny/prog/big_buck_bunny_prog.mp4"
@@ -19,8 +19,8 @@
         var player = document.getElementById('player');
         // hide built in controller
         player.controls = false;
-        player.load();
-        player.play();
+        //player.load();
+        //player.play();
       }
 
       window.onload = initPlayer();
