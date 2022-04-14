@@ -16,13 +16,14 @@
     </video>
     
     <script src="js/receiver.js"></script>
-    <script>
-      cast.framework.CastReceiverContext.getInstance().start();
-      // get player reference
-      var player = new Player(document.getElementById('player'));
-      // hide built in controller
-      //player.controls = false;
-      player.play();
-    </script>
   </body>
+  
+  <script>
+    cast.framework.CastReceiverContext.getInstance().start();
+    // get player reference
+    var player = new Player(document.getElementById('player'));
+    // hide built in controller
+    //player.controls = false;
+    player.play();
+  </script>
 </html>
