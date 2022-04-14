@@ -8,7 +8,7 @@
     <script src="//www.gstatic.com/cast/sdk/libs/devtools/debug_layer/caf_receiver_logger.js"></script>
   </head>
 
-  <body>
+  <body onload="initPlayer()">
 
     <video id="player" 
       src="https://storage.googleapis.com/cpe-sample-media/content/big_buck_bunny/prog/big_buck_bunny_prog.mp4"
@@ -16,14 +16,17 @@
     </video>
     
     <script src="js/receiver.js"></script>
+    
+    <script>
+      function initPlayer(){
+        cast.framework.CastReceiverContext.getInstance().start();
+        // get player reference
+        var player = new Player(document.getElementById('player'));
+        // hide built in controller
+        //player.controls = false;
+        player.play();
+      }
+    </script>
   </body>
   
-  <script>
-    cast.framework.CastReceiverContext.getInstance().start();
-    // get player reference
-    var player = new Player(document.getElementById('player'));
-    // hide built in controller
-    //player.controls = false;
-    player.play();
-  </script>
 </html>
