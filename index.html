@@ -9,9 +9,17 @@
   </head>
 
   <body>
-    <cast-media-player></cast-media-player>
-    <footer>
-      <script src="js/receiver.js"></script>
-  </footer>
+
+    <video id="player" src="https://storage.googleapis.com/cpe-sample-media/content/big_buck_bunny/prog/big_buck_bunny_prog.mp4">
+    </video>
+    
+    <script src="js/receiver.js"></script>
+    <script>
+      cast.framework.CastReceiverContext.getInstance().start();
+      // get player reference
+      var player = new Player(document.getElementById('player'));
+      // hide built in controller
+      player.controls = false;
+    </script>
   </body>
 </html>
