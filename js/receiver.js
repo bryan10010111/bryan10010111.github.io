@@ -1,4 +1,3 @@
-const context = cast.framework.CastReceiverContext.getInstance();
 
 // Debug Logger
 const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
@@ -17,5 +16,3 @@ castDebugLogger.loggerLevelByEvents = {
 }
 
 
-
-context.start();
