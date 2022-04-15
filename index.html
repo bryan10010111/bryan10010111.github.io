@@ -5,8 +5,24 @@
     </script>
   </head>
   <body style="background-color:gray;">
+    <video id="videoPlayer" 
+    src="https://storage.googleapis.com/cpe-sample-media/content/big_buck_bunny/prog/big_buck_bunny_prog.mp4"
+    type="video/mp4">
+    </video>
+
     <script>
-      cast.framework.CastReceiverContext.getInstance().start();
+      function initPlayer(){
+        // get player reference
+        var player = document.getElementById('videoPlayer');
+        // hide built in controller
+        player.controls = false;
+        //player.load();
+        player.play();
+
+        //
+        cast.framework.CastReceiverContext.getInstance().start();
+      }
+      window.onload = initPlayer();
     </script>
   </body>
 </html>
