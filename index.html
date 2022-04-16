@@ -18,6 +18,9 @@
         var videoPlayer = document.getElementById('videoPlayer');
         // hide built in controller
         videoPlayer.controls = false;
+        videoPlayer.src = "https://storage.googleapis.com/cpe-sample-media/content/big_buck_bunny/prog/big_buck_bunny_prog.mp4";
+        videoPlayer.load();
+        videoPlayer.play();
 
         // Create the CastDebugLogger object and enable the logger:
         const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
