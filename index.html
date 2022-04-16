@@ -5,25 +5,38 @@
     </script>
   </head>
   <body style="background-color:gray;">
-    <video id="videoPlayer" 
-    src="https://storage.googleapis.com/cpe-sample-media/content/big_buck_bunny/prog/big_buck_bunny_prog.mp4"
-    type="video/mp4">
-    </video>
+    <!-- the only player -->
+    <video id="videoPlayer"></video>
 
     <script>
       function initPlayer(){
-        // get player reference
-        var player = document.getElementById('videoPlayer');
-        // hide built in controller
-        player.controls = false;
-        //player.load();
-        player.play();
-
         //
+        var my_namespace ="urn:x-cast:custom_namespace";
+        // get player reference
+        var videoPlayer = document.getElementById('videoPlayer');
+        // hide built in controller
+        videoPlayer.controls = false;
+
+        //Initializes system manager and media manager, so that receiver app can receive requests from senders
         cast.framework.CastReceiverContext.getInstance().start();
+        // Retrieve the current cast session, then Add an event listener to the defined namespace channel
+        cast.framework.CastContext.getInstance().getCurrentSession()
+          .addMessageListener(my_namespace, (namespace, message) => {
+            const fromServer = JSON.parse(message); 
+            switch(message.subject){
+              case "play":
+                // Set player's source
+                videoPlayer.src = message.video_source;
+                // Resets the media to the beginning and selects the best available source
+                videoPlayer.load();
+                // Begins playback of the media
+                videoPlayer.play();
+                break;
+              default:
+            }
+          })
       }
       window.onload = initPlayer();
     </script>
   </body>
 </html>
-  
