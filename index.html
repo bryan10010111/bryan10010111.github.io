@@ -21,6 +21,7 @@
         videoPlayer.src = "https://storage.googleapis.com/cpe-sample-media/content/big_buck_bunny/prog/big_buck_bunny_prog.mp4";
         videoPlayer.load();
         videoPlayer.play();
+        console.log("play video");
 
         // Initializes system manager and media manager, so that receiver app can receive requests from senders
         cast.framework.CastReceiverContext.getInstance().start();
