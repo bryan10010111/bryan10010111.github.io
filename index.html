@@ -17,8 +17,10 @@
         // hide built in controller
         videoPlayer.controls = false;
 
-        //Initializes system manager and media manager, so that receiver app can receive requests from senders
+        // Initializes system manager and media manager, so that receiver app can receive requests from senders
         cast.framework.CastReceiverContext.getInstance().start();
+        // enable debug logging
+        cast.framework.CastReceiverContext.getInstance().setLoggerLevel(cast.framework.LoggerLevel.DEBUG);
         // Retrieve the current cast session, then Add an event listener to the defined namespace channel
         cast.framework.CastReceiverContext.getInstance().getCurrentSession()
           .addMessageListener(my_namespace, (namespace, message) => {
