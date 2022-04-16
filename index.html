@@ -27,6 +27,9 @@
         // Retrieve the current cast session, then Add an event listener to the defined namespace channel
         cast.framework.CastReceiverContext.getInstance().getCurrentSession()
           .addMessageListener(my_namespace, (namespace, message) => {
+            //
+            console.log("from server");
+            //
             const fromServer = JSON.parse(message); 
             switch(message.subject){
               case "play":
