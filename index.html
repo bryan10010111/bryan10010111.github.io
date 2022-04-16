@@ -20,7 +20,7 @@
         //Initializes system manager and media manager, so that receiver app can receive requests from senders
         cast.framework.CastReceiverContext.getInstance().start();
         // Retrieve the current cast session, then Add an event listener to the defined namespace channel
-        cast.framework.CastContext.getInstance().getCurrentSession()
+        cast.framework.CastReceiverContext.getInstance().getCurrentSession()
           .addMessageListener(my_namespace, (namespace, message) => {
             const fromServer = JSON.parse(message); 
             switch(message.subject){
