@@ -26,7 +26,7 @@
           videoPlayer.pause();
           //
           console.log("from server");
-          const fromServer = JSON.parse(event.data); 
+          const fromServer = JSON.parse(event.data.msg); 
           switch(fromServer.subject){
             case "play":
               // Set player's source
