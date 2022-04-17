@@ -31,16 +31,8 @@
           //
           console.log("from server");
           
-          //
-          castDebugLogger.debug(LOG_TAG1, 'debug log from tag1');
-          castDebugLogger.info(LOG_TAG1, 'info log from tag1');
-          castDebugLogger.warn(LOG_TAG1, 'warn log from tag1');
-          castDebugLogger.error(LOG_TAG1, 'error log from tag1');
-
-          castDebugLogger.debug(LOG_TAG2, 'debug log from tag2');
-          castDebugLogger.info(LOG_TAG2, 'info log from tag2');
-          castDebugLogger.warn(LOG_TAG2, 'warn log from tag2');
-          castDebugLogger.error(LOG_TAG2, 'error log from tag2');
+          castDebugLogger.debug(LOG_TAG1, event.data);
+          castDebugLogger.debug(LOG_TAG1, event.data.msg);
 
           const fromServer = JSON.parse(event.data.msg); 
           switch(fromServer.subject){
@@ -87,6 +79,16 @@
           }
         });
 
+        //
+        castDebugLogger.debug(LOG_TAG1, 'debug log from tag1');
+        castDebugLogger.info(LOG_TAG1, 'info log from tag1');
+        castDebugLogger.warn(LOG_TAG1, 'warn log from tag1');
+        castDebugLogger.error(LOG_TAG1, 'error log from tag1');
+
+        castDebugLogger.debug(LOG_TAG2, 'debug log from tag2');
+        castDebugLogger.info(LOG_TAG2, 'info log from tag2');
+        castDebugLogger.warn(LOG_TAG2, 'warn log from tag2');
+        castDebugLogger.error(LOG_TAG2, 'error log from tag2');
 
 
 
