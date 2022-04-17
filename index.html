@@ -29,7 +29,6 @@
         // Retrieve the current cast session, then Add an event listener to the defined namespace channel
         cast.framework.CastReceiverContext.getInstance()
           .addCustomMessageListener(my_namespace, event => {
-            videoPlayer.pause();
             //
             console.log("from server");
             //
