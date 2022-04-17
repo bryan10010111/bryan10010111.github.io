@@ -10,8 +10,6 @@
 
     <script>
       function initPlayer(){
-        //
-        const my_namespace ="urn:x-cast:custom_namespace";
         // get player reference
         var videoPlayer = document.getElementById('videoPlayer');
         // hide built in controller
@@ -21,28 +19,31 @@
         videoPlayer.play();
         console.log("play video");
 
+        var castReceiverContext = cast.framework.CastReceiverContext.getInstance();
+        // Add an event listener to the defined namespace channel
+        castReceiverContext.addCustomMessageListener('urn:x-cast:custom_namespace', event => {
+          videoPlayer.pause();
+          //
+          console.log("from server");
+          //
+          const fromServer = JSON.parse(message); 
+          switch(message.subject){
+            case "play":
+              // Set player's source
+              videoPlayer.src = message.video_source;
+              // Resets the media to the beginning and selects the best available source
+              videoPlayer.load();
+              // Begins playback of the media
+              videoPlayer.play();
+              break;
+            default:
+          }
+        });
+        //
+        var options = new cast.framework.CastReceiverOptions();
+        options.disableIdleTimeout = true;
         // Initializes system manager and media manager, so that receiver app can receive requests from senders
-        cast.framework.CastReceiverContext.getInstance().start();
-        // Retrieve the current cast session, then Add an event listener to the defined namespace channel
-        cast.framework.CastReceiverContext.getInstance()
-          .addCustomMessageListener(my_namespace, event => {
-            videoPlayer.pause();
-            //
-            console.log("from server");
-            //
-            const fromServer = JSON.parse(message); 
-            switch(message.subject){
-              case "play":
-                // Set player's source
-                videoPlayer.src = message.video_source;
-                // Resets the media to the beginning and selects the best available source
-                videoPlayer.load();
-                // Begins playback of the media
-                videoPlayer.play();
-                break;
-              default:
-            }
-          });
+        castReceiverContext.start(options);
       }
      
       window.onload = initPlayer();
