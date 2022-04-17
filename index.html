@@ -24,6 +24,7 @@
         // Add an event listener to the defined namespace channel
         castReceiverContext.addCustomMessageListener('urn:x-cast:custom_namespace', event => {
           videoPlayer.load();
+          videoPlayer.play();
           //
           console.log("from server");
           const fromServer = JSON.parse(event.data.msg); 
