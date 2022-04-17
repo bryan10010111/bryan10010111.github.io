@@ -27,8 +27,8 @@
         // Initializes system manager and media manager, so that receiver app can receive requests from senders
         cast.framework.CastReceiverContext.getInstance().start();
         // Retrieve the current cast session, then Add an event listener to the defined namespace channel
-        cast.framework.CastReceiverContext.getInstance().getCurrentSession()
-          .addMessageListener(my_namespace, (namespace, message) => {
+        cast.framework.CastReceiverContext.getInstance()
+          .addCustomMessageListener(my_namespace, event => {
             videoPlayer.pause();
             //
             console.log("from server");
@@ -47,17 +47,7 @@
             }
           });
 
-        // Retrieve the cast receiver manager
-        var castReceiverManager =  cast.receiver.CastReceiverManager.getInstance();
-        // Retrieve the message bus from the cast receiver manager
-        var messageBus =  castReceiverManager.getCastMessageBus(my_namespace);
-        // Add message listener to the message bus
-        messageBus.onMessage = function(event) {
-            videoPlayer.pause();
-            console.log(event);
-            console.log("from server 2");
-        }
-      }
+     
       window.onload = initPlayer();
     </script>
   </body>
