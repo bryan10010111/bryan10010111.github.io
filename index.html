@@ -18,9 +18,9 @@
         var videoPlayer = document.getElementById('videoPlayer');
         // hide built in controller
         videoPlayer.controls = false;
-        //videoPlayer.src = "https://storage.googleapis.com/cpe-sample-media/content/big_buck_bunny/prog/big_buck_bunny_prog.mp4";
-       // videoPlayer.load();
-       // videoPlayer.play();
+        videoPlayer.src = "https://storage.googleapis.com/cpe-sample-media/content/big_buck_bunny/prog/big_buck_bunny_prog.mp4";
+        videoPlayer.load();
+        videoPlayer.play();
         console.log("play video");
 
         var castReceiverContext = cast.framework.CastReceiverContext.getInstance();
@@ -81,7 +81,7 @@
             default:
           }
         });
-        
+
         //
         var options = new cast.framework.CastReceiverOptions();
         options.disableIdleTimeout = true;
