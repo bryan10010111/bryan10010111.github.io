@@ -56,6 +56,12 @@
               castDebugLogger.clearDebugLogs();
           }
         });
+        
+        //
+        var options = new cast.framework.CastReceiverOptions();
+        options.disableIdleTimeout = true;
+        // Initializes system manager and media manager, so that receiver app can receive requests from senders
+        castReceiverContext.start(options);
 
         //
         castDebugLogger.debug(LOG_TAG1, 'debug log from tag1');
@@ -95,12 +101,6 @@
         });
 
 
-
-        //
-        var options = new cast.framework.CastReceiverOptions();
-        options.disableIdleTimeout = true;
-        // Initializes system manager and media manager, so that receiver app can receive requests from senders
-        castReceiverContext.start(options);
 
       }
      
