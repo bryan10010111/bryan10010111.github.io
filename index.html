@@ -6,11 +6,15 @@
     <!-- Cast Debug Logger -->
     <script src="//www.gstatic.com/cast/sdk/libs/devtools/debug_layer/caf_receiver_logger.js"></script>
 
+    <link rel="stylesheet" href="css/player.css">
   </head>
 
   <body style="background-color:gray;">
     <!-- the only player -->
-    <video id="videoPlayer"></video>
+    <div class="video-container">
+      <video id="videoPlayer"></video>
+    </div>
+    
 
     <script>
       function initPlayer(){
