@@ -17,7 +17,7 @@
         // get player reference
         var videoPlayer = document.getElementById('videoPlayer');
         // hide built in controller
-        videoPlayer.controls = false;
+        //videoPlayer.controls = false;
         //videoPlayer.src = "https://storage.googleapis.com/cpe-sample-media/content/big_buck_bunny/prog/big_buck_bunny_prog.mp4";
         //videoPlayer.load();
         //videoPlayer.play();
@@ -55,7 +55,7 @@
             case "play":     
               castDebugLogger.debug(LOG_TAG1, "event.data.subject: "+event.data.subject);         
               castDebugLogger.debug(LOG_TAG1, "event.data.video_source: "+event.data.video_source);
-              videoPlayer.stop();
+              //videoPlayer.stop();
               // Set player's source
               videoPlayer.src = event.data.video_source;
               // Resets the media to the beginning and selects the best available source
