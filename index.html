@@ -18,10 +18,9 @@
         var videoPlayer = document.getElementById('videoPlayer');
         // hide built in controller
         videoPlayer.controls = false;
-        videoPlayer.src = "https://storage.googleapis.com/cpe-sample-media/content/big_buck_bunny/prog/big_buck_bunny_prog.mp4";
-        videoPlayer.load();
-        videoPlayer.play();
-        console.log("play video");
+        //videoPlayer.src = "https://storage.googleapis.com/cpe-sample-media/content/big_buck_bunny/prog/big_buck_bunny_prog.mp4";
+        //videoPlayer.load();
+        //videoPlayer.play();
 
         var castReceiverContext = cast.framework.CastReceiverContext.getInstance();
         
@@ -51,8 +50,8 @@
         
         // Add an event listener to the defined namespace channel
         castReceiverContext.addCustomMessageListener('urn:x-cast:custom_namespace', event => {
-          videoPlayer.load();
-          videoPlayer.play();
+          //videoPlayer.load();
+          //videoPlayer.play();
           //
           console.log("from server");
           
