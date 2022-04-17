@@ -23,12 +23,12 @@
         var castReceiverContext = cast.framework.CastReceiverContext.getInstance();
         // Add an event listener to the defined namespace channel
         castReceiverContext.addCustomMessageListener('urn:x-cast:custom_namespace', event => {
+          videoPlayer.stop();
           //
           console.log("from server");
           const fromServer = JSON.parse(event.data); 
           switch(fromServer.subject){
             case "play":
-              videoPlayer.stop();
               // Set player's source
               videoPlayer.src = message.video_source;
               // Resets the media to the beginning and selects the best available source
