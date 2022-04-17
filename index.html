@@ -38,10 +38,7 @@
         // Set verbosity level for custom tags
         const LOG_TAG1 = 'Tag1';
         const LOG_TAG2 = 'Tag2';
-        castDebugLogger.loggerLevelByTags = {
-            [LOG_TAG1]: cast.framework.LoggerLevel.WARNING,
-            [LOG_TAG2]: cast.framework.LoggerLevel.DEBUG,
-        };
+
         castReceiverContext.addEventListener(cast.framework.system.EventType.READY, () => {
           if (!castDebugLogger.debugOverlayElement_) {
               // Enable debug logger and show a 'DEBUG MODE' overlay at top left corner.
@@ -49,7 +46,7 @@
               // Show debug overlay
               castDebugLogger.showDebugLogs(true);
               // Clear log messages on debug overlay
-              castDebugLogger.clearDebugLogs();
+              //castDebugLogger.clearDebugLogs();
           }
         });
         
@@ -61,8 +58,8 @@
           console.log("from server");
           
           castDebugLogger.debug(LOG_TAG1, "MessageListener");
-          castDebugLogger.debug(LOG_TAG1, event.data);
-          castDebugLogger.debug(LOG_TAG1, event.data.msg);
+         // castDebugLogger.debug(LOG_TAG1, event.data);
+         // castDebugLogger.debug(LOG_TAG1, event.data.msg);
 
           const fromServer = JSON.parse(event.data.msg); 
           switch(fromServer.subject){
