@@ -52,7 +52,7 @@
         castReceiverContext.addCustomMessageListener('urn:x-cast:custom_namespace', event => {          
           castDebugLogger.debug(LOG_TAG1, "event.data.subject: "+event.data.subject);         
           castDebugLogger.debug(LOG_TAG1, "event.data.video_source: "+event.data.video_source);
-          /*
+          
           switch(event.data.subject){
             case "play":
               videoPlayer.stop();
