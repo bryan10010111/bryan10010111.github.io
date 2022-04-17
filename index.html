@@ -25,8 +25,8 @@
         castReceiverContext.addCustomMessageListener('urn:x-cast:custom_namespace', event => {
           //
           console.log("from server");
-          //const fromServer = JSON.parse(message); 
-          switch(event.data.subject){
+          const fromServer = JSON.parse(event.data); 
+          switch(fromServer.subject){
             case "play":
               videoPlayer.stop();
               // Set player's source
