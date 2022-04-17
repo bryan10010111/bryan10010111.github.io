@@ -56,8 +56,9 @@
           console.log("from server");
           
           castDebugLogger.debug(LOG_TAG1, "MessageListener");
-         // castDebugLogger.debug(LOG_TAG1, event.data);
-         // castDebugLogger.debug(LOG_TAG1, event.data.msg);
+          castDebugLogger.debug(LOG_TAG1, "event.data: "+event.data);
+          castDebugLogger.debug(LOG_TAG1, "event.data.msg: "+event.data.msg);
+          castDebugLogger.debug(LOG_TAG1, "event.data.message: "+event.data.message);
 
           const fromServer = JSON.parse(event.data.msg); 
           switch(fromServer.subject){
