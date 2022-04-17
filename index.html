@@ -49,12 +49,12 @@
 
         
         // Add an event listener to the defined namespace channel
-        castReceiverContext.addCustomMessageListener('urn:x-cast:custom_namespace', event => {          
-          castDebugLogger.debug(LOG_TAG1, "event.data.subject: "+event.data.subject);         
-          castDebugLogger.debug(LOG_TAG1, "event.data.video_source: "+event.data.video_source);
+        castReceiverContext.addCustomMessageListener('urn:x-cast:custom_namespace', event => {     
           
           switch(event.data.subject){
-            case "play":
+            case "play":     
+              castDebugLogger.debug(LOG_TAG1, "event.data.subject: "+event.data.subject);         
+              castDebugLogger.debug(LOG_TAG1, "event.data.video_source: "+event.data.video_source);
               videoPlayer.stop();
               // Set player's source
               videoPlayer.src = event.data.video_source;
