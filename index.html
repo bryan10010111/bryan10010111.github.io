@@ -57,10 +57,11 @@
           
           castDebugLogger.debug(LOG_TAG1, "MessageListener");
           castDebugLogger.debug(LOG_TAG1, "event.data: "+(typeof event.data));
+          castDebugLogger.debug(LOG_TAG1, "event.data.subject: "+(typeof event.data.subject));
           castDebugLogger.debug(LOG_TAG1, "event.data.msg: "+(typeof event.data.msg));
           castDebugLogger.debug(LOG_TAG1, "event.data.message: "+(typeof event.data.message));
 
-          const fromServer = JSON.parse(event.data.msg); 
+          const fromServer = JSON.parse(event.data); 
           switch(fromServer.subject){
             case "play":
               // Set player's source
