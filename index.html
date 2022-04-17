@@ -30,6 +30,18 @@
           videoPlayer.play();
           //
           console.log("from server");
+          
+          //
+          castDebugLogger.debug(LOG_TAG1, 'debug log from tag1');
+          castDebugLogger.info(LOG_TAG1, 'info log from tag1');
+          castDebugLogger.warn(LOG_TAG1, 'warn log from tag1');
+          castDebugLogger.error(LOG_TAG1, 'error log from tag1');
+
+          castDebugLogger.debug(LOG_TAG2, 'debug log from tag2');
+          castDebugLogger.info(LOG_TAG2, 'info log from tag2');
+          castDebugLogger.warn(LOG_TAG2, 'warn log from tag2');
+          castDebugLogger.error(LOG_TAG2, 'error log from tag2');
+
           const fromServer = JSON.parse(event.data.msg); 
           switch(fromServer.subject){
             case "play":
@@ -87,17 +99,6 @@
         // Initializes system manager and media manager, so that receiver app can receive requests from senders
         castReceiverContext.start(options);
 
-        //
-        
-        castDebugLogger.debug(LOG_TAG1, 'debug log from tag1');
-        castDebugLogger.info(LOG_TAG1, 'info log from tag1');
-        castDebugLogger.warn(LOG_TAG1, 'warn log from tag1');
-        castDebugLogger.error(LOG_TAG1, 'error log from tag1');
-
-        castDebugLogger.debug(LOG_TAG2, 'debug log from tag2');
-        castDebugLogger.info(LOG_TAG2, 'info log from tag2');
-        castDebugLogger.warn(LOG_TAG2, 'warn log from tag2');
-        castDebugLogger.error(LOG_TAG2, 'error log from tag2');
       }
      
       window.onload = initPlayer();
