@@ -34,14 +34,10 @@
               castDebugLogger.setEnabled(true);
           }
         });
-        const LOG_TAG1 = 'Tag1';
-        const LOG_TAG2 = 'Tag2';
 
         // Set verbosity level for custom tags
-        castDebugLogger.loggerLevelByEvents = {
-          'cast.framework.events.category.CORE': cast.framework.LoggerLevel.INFO,
-          'cast.framework.events.EventType.MEDIA_STATUS': cast.framework.LoggerLevel.DEBUG
-        }
+        const LOG_TAG1 = 'Tag1';
+        const LOG_TAG2 = 'Tag2';
         castDebugLogger.loggerLevelByTags = {
             [LOG_TAG1]: cast.framework.LoggerLevel.WARNING,
             [LOG_TAG2]: cast.framework.LoggerLevel.DEBUG,
