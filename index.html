@@ -24,29 +24,7 @@
         console.log("play video");
 
         var castReceiverContext = cast.framework.CastReceiverContext.getInstance();
-        // Add an event listener to the defined namespace channel
-        castReceiverContext.addCustomMessageListener('urn:x-cast:custom_namespace', event => {
-          videoPlayer.load();
-          videoPlayer.play();
-          //
-          console.log("from server");
-          
-          castDebugLogger.debug(LOG_TAG1, event.data);
-          castDebugLogger.debug(LOG_TAG1, event.data.msg);
-
-          const fromServer = JSON.parse(event.data.msg); 
-          switch(fromServer.subject){
-            case "play":
-              // Set player's source
-              videoPlayer.src = message.video_source;
-              // Resets the media to the beginning and selects the best available source
-              videoPlayer.load();
-              // Begins playback of the media
-              videoPlayer.play();
-              break;
-            default:
-          }
-        });
+        
 
         // Create the CastDebugLogger object and enable the logger
         const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
@@ -91,7 +69,30 @@
         castDebugLogger.error(LOG_TAG2, 'error log from tag2');
 
 
+        // Add an event listener to the defined namespace channel
+        castReceiverContext.addCustomMessageListener('urn:x-cast:custom_namespace', event => {
+          videoPlayer.load();
+          videoPlayer.play();
+          //
+          console.log("from server");
+          
+          castDebugLogger.debug(LOG_TAG1, "MessageListener");
+          castDebugLogger.debug(LOG_TAG1, event.data);
+          castDebugLogger.debug(LOG_TAG1, event.data.msg);
 
+          const fromServer = JSON.parse(event.data.msg); 
+          switch(fromServer.subject){
+            case "play":
+              // Set player's source
+              videoPlayer.src = message.video_source;
+              // Resets the media to the beginning and selects the best available source
+              videoPlayer.load();
+              // Begins playback of the media
+              videoPlayer.play();
+              break;
+            default:
+          }
+        });
 
 
 
