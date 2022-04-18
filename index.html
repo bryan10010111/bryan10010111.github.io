@@ -105,14 +105,6 @@
       function initPlayer(){
         //  create an instance of the audio context
         const audioContext = new AudioContext();
-        // get the audio element
-        const audioElement = audioContext.createMediaElementSource(videoPlayer);
-        // pass it into the audio context
-        const track = audioContext.createMediaElementSource(audioElement);
-        // default pan set to 0 - center
-        stereoNode = new StereoPannerNode(audioContext, { pan: 0 });
-        
-        track.connect(stereoNode).connect(audioContext.destination);
       }
 
       function initReceiver(){
