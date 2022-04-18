@@ -1,127 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <!-- Web Receiver SDK -->
-    <script src="//www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js"></script>
-    <!-- Cast Debug Logger -->
-    <script src="//www.gstatic.com/cast/sdk/libs/devtools/debug_layer/caf_receiver_logger.js"></script>
-
-    <link rel="stylesheet" href="css/player.css">
+    <meta charset="utf-8">
+    <title>Cast CAF Receiver</title>
   </head>
 
-  <body style="background-color:gray;">
-    <!-- the only player -->
-    <div class="video-container">
-      <video id="videoPlayer"></video>
-    </div>
-    
+  <body style="background-color:black;">
+
+    <video crossOrigin="anonymous" controls id="videoPlayer" 
+      src="http://192.168.1.204:40673/6"
+      type="video/mp4">
+    </video>
 
     <script>
       // get player reference
       var videoPlayer = document.getElementById('videoPlayer');
-      // audio channel
-      var panner;
-
-      var castReceiverContext;
-      var castDebugLogger;
-      const LOG_TAG = 'Tag1';
-
-      function initCastReceiver(){
-        
-        castReceiverContext = cast.framework.CastReceiverContext.getInstance();
-        
-        // Create the CastDebugLogger object and enable the logger
-        castDebugLogger = cast.debug.CastDebugLogger.getInstance();
-        
-        castReceiverContext.addEventListener(cast.framework.system.EventType.READY, () => {
-          if (!castDebugLogger.debugOverlayElement_) {
-              // Enable debug logger and show a 'DEBUG MODE' overlay at top left corner.
-              castDebugLogger.setEnabled(true);
-              // Show debug overlay
-              castDebugLogger.showDebugLogs(true);
-              // Clear log messages on debug overlay
-              castDebugLogger.clearDebugLogs();
-          }
-        });//*/
-
-        castDebugLogger.loggerLevelByEvents = {
-          'cast.framework.events.category.CORE': cast.framework.LoggerLevel.INFO,
-          'cast.framework.events.EventType.MEDIA_STATUS': cast.framework.LoggerLevel.DEBUG
-        }
-
-
-        
-        // Add an event listener to the defined namespace channel
-        castReceiverContext.addCustomMessageListener('urn:x-cast:custom_namespace', event => {     
-          
-          switch(event.data.subject){
-            case "play":         
-              castDebugLogger.debug(LOG_TAG, "event.data.subject: "+event.data.subject);     
-              castDebugLogger.debug(LOG_TAG, "event.data.value: "+event.data.value);
-              //videoPlayer.stop();
-              // Set player's source
-              videoPlayer.src = event.data.value;
-              // Resets the media to the beginning and selects the best available source
-              videoPlayer.load();
-              // Begins playback of the media
-              videoPlayer.play();
-              break;
-            case "set_audio_channel":
-              castDebugLogger.debug(LOG_TAG, "event.data.subject: "+event.data.subject);  
-              castDebugLogger.debug(LOG_TAG, "event.data.value: "+event.data.value);  
-              
-              switch(event.data.value){
-                case "left":
-                  castDebugLogger.debug(LOG_TAG, "LEFT");  
-                  // Configure panner -1 left and 1 for right
-                  panner.pan.setValueAtTime(-1, context.currentTime)
-                  break;
-                case "right":
-                  castDebugLogger.debug(LOG_TAG, "RIGHT");
-                  // Configure panner -1 left and 1 for right
-                  panner.pan.setValueAtTime(1, context.currentTime)
-                  break;
-                case "both":
-                  castDebugLogger.debug(LOG_TAG, "CENTER");
-                  // Configure panner -1 left and 1 for right
-                  panner.pan.setValueAtTime(0, context.currentTime)
-                  break;
-              }
-              break;
-            default:
-          }//*/
-        });
-
-        //
-        var options = new cast.framework.CastReceiverOptions();
-        options.disableIdleTimeout = true;
-        // Initializes system manager and media manager, so that receiver app can receive requests from senders
-        castReceiverContext.start(options);
-      }
-
-
-
 
       function initPlayer(){
+        // hide built in controller
+       // player.controls = false;
+        //player.load();
+        //player.play();
+
+        
         //  create an instance of the audio context\
         const context = new AudioContext(),
-          audioSource = context.createMediaElementSource(videoPlayer);
-        
-        panner = context.createStereoPanner();
+            audioSource = context.createMediaElementSource(document.getElementById("videoPlayer")),
+            panner = context.createStereoPanner();
         audioSource.connect(panner);
         panner.connect(context.destination);
 
         // Configure panner -1 left and 1 for right. 
-        //panner.pan.setValueAtTime(-1, context.currentTime)
+        panner.pan.setValueAtTime(1, context.currentTime)
       }
+      window.onload = initPlayer();
 
-      function initReceiver(){
-        initCastReceiver();
-        initPlayer();
-      }
+      //
+      function resize() {
+        var videoRatio = videoPlayer.height / videoPlayer.width;
+        var windowRatio = window.innerHeight / window.innerWidth; /* browser size */
 
-     
-      window.onload = initReceiver();
+        videoPlayer.width = window.innerWidth;
+
+        if(videoPlayer.height > window.innerHeight)
+        videoPlayer.height = window.innerHeight;
+
+      };
+      window.addEventListener('resize', resize, false);
     </script>
   </body>
+  
 </html>
