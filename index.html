@@ -111,7 +111,8 @@
         const track = audioContext.createMediaElementSource(audioElement);
         // default pan set to 0 - center
         stereoNode = new StereoPannerNode(audioContext, { pan: 0 });
-
+        
+        track.connect(stereoNode).connect(audioContext.destination);
       }
 
       function initReceiver(){
