@@ -89,6 +89,7 @@
       }
 
       function setAudioChannel(desired_channel){
+        castDebugLogger.debug(LOG_TAG, "setAudioChannel");  
         switch(desired_channel){
           case "left":
             castDebugLogger.debug(LOG_TAG, "LEFT");  
