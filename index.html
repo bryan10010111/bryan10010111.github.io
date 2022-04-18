@@ -17,46 +17,17 @@
     
 
     <script>
-      var videoPlayer;
-      var context;
-      var audioSource;
-      var panner;
+      // get player reference
+      var videoPlayer = document.getElementById('videoPlayer');
+      // audio channel
+      var stereoNode;
 
       var castReceiverContext;
       var castDebugLogger;
       const LOG_TAG = 'Tag1';
 
-      function setAudioChannel(desired_channel){
-        castDebugLogger.debug(LOG_TAG, "setAudioChannel");  
-        switch(desired_channel){
-          case "left":
-            castDebugLogger.debug(LOG_TAG, "LEFT");  
-            // Configure panner -1 left and 1 for right.
-            panner.pan.setValueAtTime(-1, context.currentTime)
-            break;
-          case "right":
-            castDebugLogger.debug(LOG_TAG, "RIGHT");
-            // Configure panner -1 left and 1 for right.
-            panner.pan.setValueAtTime(1, context.currentTime)
-            break;
-          case "both":
-            castDebugLogger.debug(LOG_TAG, "CENTER");
-            // Configure panner -1 left and 1 for right.
-            panner.pan.setValueAtTime(0, context.currentTime)
-            break;
-        }
-      }
-
-      function initPlayer(){
-        // get player reference
-        videoPlayer = document.getElementById('videoPlayer');
-        context = new AudioContext();
-        audioSource = context.createMediaElementSource(videoPlayer);
-        panner = context.createStereoPanner();
-        audioSource.connect(panner);
-        panner.connect(context.destination);
-
-
+      function initCastReceiver(){
+        
         castReceiverContext = cast.framework.CastReceiverContext.getInstance();
         
         // Create the CastDebugLogger object and enable the logger
@@ -98,7 +69,24 @@
             case "set_audio_channel":
               castDebugLogger.debug(LOG_TAG, "event.data.subject: "+event.data.subject);  
               castDebugLogger.debug(LOG_TAG, "event.data.value: "+event.data.value);  
-              setAudioChannel(event.data.value);
+              
+              switch(event.data.value){
+                case "left":
+                  castDebugLogger.debug(LOG_TAG, "LEFT");  
+                  // Configure panner -1 left and 1 for right
+                  stereoNode.pan.value = -1; // left
+                  break;
+                case "right":
+                  castDebugLogger.debug(LOG_TAG, "RIGHT");
+                  // Configure panner -1 left and 1 for right
+                  stereoNode.pan.value = 1; // right
+                  break;
+                case "both":
+                  castDebugLogger.debug(LOG_TAG, "CENTER");
+                  // Configure panner -1 left and 1 for right
+                  stereoNode.pan.value = 0; // center
+                  break;
+              }
               break;
             default:
           }//*/
@@ -112,8 +100,27 @@
       }
 
 
+
+
+      function initPlayer(){
+        //  create an instance of the audio context
+        const audioContext = new AudioContext();
+        // get the audio element
+        const audioElement = audioContext.createMediaElementSource(videoPlayer);
+        // pass it into the audio context
+        const track = audioContext.createMediaElementSource(audioElement);
+        // default pan set to 0 - center
+        stereoNode = new StereoPannerNode(audioContext, { pan: 0 });
+
+      }
+
+      function initReceiver(){
+        initCastReceiver();
+        initPlayer();
+      }
+
      
-      window.onload = initPlayer();
+      window.onload = initReceiver();
     </script>
   </body>
 </html>
