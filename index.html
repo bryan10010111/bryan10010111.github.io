@@ -17,18 +17,23 @@
     
 
     <script>
+      var videoPlayer;
+      var context;
+      var audioSource;
+      var panner;
+
       function initPlayer(){
         // get player reference
-        var videoPlayer = document.getElementById('videoPlayer');
-        // hide built in controller
-        //videoPlayer.controls = false;
-        //videoPlayer.src = "https://storage.googleapis.com/cpe-sample-media/content/big_buck_bunny/prog/big_buck_bunny_prog.mp4";
-        //videoPlayer.load();
-        //videoPlayer.play();
+        videoPlayer = document.getElementById('videoPlayer');
+        context = new AudioContext();
+        audioSource = context.createMediaElementSource(videoPlayer);
+        panner = context.createStereoPanner();
+        audioSource.connect(panner);
+        panner.connect(context.destination);
+
 
         var castReceiverContext = cast.framework.CastReceiverContext.getInstance();
         
-
         // Create the CastDebugLogger object and enable the logger
         const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
         
@@ -37,9 +42,9 @@
               // Enable debug logger and show a 'DEBUG MODE' overlay at top left corner.
               castDebugLogger.setEnabled(true);
               // Show debug overlay
-              //castDebugLogger.showDebugLogs(true);
+              castDebugLogger.showDebugLogs(true);
               // Clear log messages on debug overlay
-              //castDebugLogger.clearDebugLogs();
+              castDebugLogger.clearDebugLogs();
           }
         });//*/
 
@@ -49,24 +54,26 @@
         }
 
         // Set verbosity level for custom tags
-        const LOG_TAG1 = 'Tag1';
-        const LOG_TAG2 = 'Tag2';
+        const LOG_TAG = 'Tag1';
 
         
         // Add an event listener to the defined namespace channel
         castReceiverContext.addCustomMessageListener('urn:x-cast:custom_namespace', event => {     
           
+          castDebugLogger.debug(LOG_TAG, "event.data.subject: "+event.data.subject);   
           switch(event.data.subject){
-            case "play":     
-              castDebugLogger.debug(LOG_TAG1, "event.data.subject: "+event.data.subject);         
-              castDebugLogger.debug(LOG_TAG1, "event.data.video_source: "+event.data.video_source);
+            case "play":           
+              castDebugLogger.debug(LOG_TAG, "event.data.value: "+event.data.value);
               //videoPlayer.stop();
               // Set player's source
-              videoPlayer.src = event.data.video_source;
+              videoPlayer.src = event.data.value;
               // Resets the media to the beginning and selects the best available source
               videoPlayer.load();
               // Begins playback of the media
               videoPlayer.play();
+              break;
+            case "set-audioMode":
+              setAudioChannel(event.data.value);
               break;
             default:
           }//*/
@@ -77,22 +84,24 @@
         options.disableIdleTimeout = true;
         // Initializes system manager and media manager, so that receiver app can receive requests from senders
         castReceiverContext.start(options);
+      }
 
-        //
-        castDebugLogger.debug(LOG_TAG1, 'debug log from tag1');
-        castDebugLogger.info(LOG_TAG1, 'info log from tag1');
-        castDebugLogger.warn(LOG_TAG1, 'warn log from tag1');
-        castDebugLogger.error(LOG_TAG1, 'error log from tag1');
-
-        castDebugLogger.debug(LOG_TAG2, 'debug log from tag2');
-        castDebugLogger.info(LOG_TAG2, 'info log from tag2');
-        castDebugLogger.warn(LOG_TAG2, 'warn log from tag2');
-        castDebugLogger.error(LOG_TAG2, 'error log from tag2');
-
-
-
-
-
+      function setAudioChannel(desired_channel){
+        castDebugLogger.debug(LOG_TAG, desired_channel);
+        switch(desired_channel){
+          case "left":
+            // Configure panner -1 left and 1 for right.
+            panner.pan.setValueAtTime(-1, context.currentTime)
+            break;
+          case "right":
+            // Configure panner -1 left and 1 for right.
+            panner.pan.setValueAtTime(1, context.currentTime)
+            break;
+          case "both":
+            // Configure panner -1 left and 1 for right.
+            panner.pan.setValueAtTime(0, context.currentTime)
+            break;
+        }
       }
      
       window.onload = initPlayer();
