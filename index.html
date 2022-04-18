@@ -20,7 +20,7 @@
       // get player reference
       var videoPlayer = document.getElementById('videoPlayer');
       // audio channel
-      var stereoNode;
+      var panner;
 
       var castReceiverContext;
       var castDebugLogger;
@@ -74,17 +74,17 @@
                 case "left":
                   castDebugLogger.debug(LOG_TAG, "LEFT");  
                   // Configure panner -1 left and 1 for right
-                  stereoNode.pan.value = -1; // left
+                  panner.pan.setValueAtTime(-1, context.currentTime)
                   break;
                 case "right":
                   castDebugLogger.debug(LOG_TAG, "RIGHT");
                   // Configure panner -1 left and 1 for right
-                  stereoNode.pan.value = 1; // right
+                  panner.pan.setValueAtTime(1, context.currentTime)
                   break;
                 case "both":
                   castDebugLogger.debug(LOG_TAG, "CENTER");
                   // Configure panner -1 left and 1 for right
-                  stereoNode.pan.value = 0; // center
+                  panner.pan.setValueAtTime(0, context.currentTime)
                   break;
               }
               break;
@@ -103,8 +103,16 @@
 
 
       function initPlayer(){
-        //  create an instance of the audio context
-        const audioContext = new AudioContext();
+        //  create an instance of the audio context\
+        const context = new AudioContext(),
+          audioSource = context.createMediaElementSource(videoPlayer);
+        
+        panner = context.createStereoPanner();
+        audioSource.connect(panner);
+        panner.connect(context.destination);
+
+        // Configure panner -1 left and 1 for right. 
+        //panner.pan.setValueAtTime(-1, context.currentTime)
       }
 
       function initReceiver(){
