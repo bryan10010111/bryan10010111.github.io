@@ -60,9 +60,9 @@
         // Add an event listener to the defined namespace channel
         castReceiverContext.addCustomMessageListener('urn:x-cast:custom_namespace', event => {     
           
-          //castDebugLogger.debug(LOG_TAG, "event.data.subject: "+event.data.subject);   
           switch(event.data.subject){
-            case "play":           
+            case "play":         
+              castDebugLogger.debug(LOG_TAG, "event.data.subject: "+event.data.subject);     
               castDebugLogger.debug(LOG_TAG, "event.data.value: "+event.data.value);
               //videoPlayer.stop();
               // Set player's source
@@ -87,6 +87,7 @@
       }
 
       function setAudioChannel(desired_channel){
+        castDebugLogger.debug(LOG_TAG, "event.data.subject: "+event.data.subject);  
         switch(desired_channel){
           case "left":
             castDebugLogger.debug(LOG_TAG, "LEFT");  
