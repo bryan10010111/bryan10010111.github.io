@@ -22,6 +22,31 @@
       var audioSource;
       var panner;
 
+      var castReceiverContext;
+      var castDebugLogger;
+      const LOG_TAG = 'Tag1';
+
+      function setAudioChannel(desired_channel){
+        castDebugLogger.debug(LOG_TAG, "setAudioChannel");  
+        switch(desired_channel){
+          case "left":
+            castDebugLogger.debug(LOG_TAG, "LEFT");  
+            // Configure panner -1 left and 1 for right.
+            panner.pan.setValueAtTime(-1, context.currentTime)
+            break;
+          case "right":
+            castDebugLogger.debug(LOG_TAG, "RIGHT");
+            // Configure panner -1 left and 1 for right.
+            panner.pan.setValueAtTime(1, context.currentTime)
+            break;
+          case "both":
+            castDebugLogger.debug(LOG_TAG, "CENTER");
+            // Configure panner -1 left and 1 for right.
+            panner.pan.setValueAtTime(0, context.currentTime)
+            break;
+        }
+      }
+
       function initPlayer(){
         // get player reference
         videoPlayer = document.getElementById('videoPlayer');
@@ -32,10 +57,10 @@
         panner.connect(context.destination);
 
 
-        var castReceiverContext = cast.framework.CastReceiverContext.getInstance();
+        castReceiverContext = cast.framework.CastReceiverContext.getInstance();
         
         // Create the CastDebugLogger object and enable the logger
-        const castDebugLogger = cast.debug.CastDebugLogger.getInstance();
+        castDebugLogger = cast.debug.CastDebugLogger.getInstance();
         
         castReceiverContext.addEventListener(cast.framework.system.EventType.READY, () => {
           if (!castDebugLogger.debugOverlayElement_) {
@@ -53,8 +78,6 @@
           'cast.framework.events.EventType.MEDIA_STATUS': cast.framework.LoggerLevel.DEBUG
         }
 
-        // Set verbosity level for custom tags
-        const LOG_TAG = 'Tag1';
 
         
         // Add an event listener to the defined namespace channel
@@ -88,26 +111,7 @@
         castReceiverContext.start(options);
       }
 
-      function setAudioChannel(desired_channel){
-        castDebugLogger.debug(LOG_TAG, "setAudioChannel");  
-        switch(desired_channel){
-          case "left":
-            castDebugLogger.debug(LOG_TAG, "LEFT");  
-            // Configure panner -1 left and 1 for right.
-            panner.pan.setValueAtTime(-1, context.currentTime)
-            break;
-          case "right":
-            castDebugLogger.debug(LOG_TAG, "RIGHT");
-            // Configure panner -1 left and 1 for right.
-            panner.pan.setValueAtTime(1, context.currentTime)
-            break;
-          case "both":
-            castDebugLogger.debug(LOG_TAG, "CENTER");
-            // Configure panner -1 left and 1 for right.
-            panner.pan.setValueAtTime(0, context.currentTime)
-            break;
-        }
-      }
+
      
       window.onload = initPlayer();
     </script>
