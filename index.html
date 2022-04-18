@@ -72,7 +72,8 @@
               // Begins playback of the media
               videoPlayer.play();
               break;
-            case "set-audioMode":
+            case "set_audio_channel":
+              castDebugLogger.debug(LOG_TAG, "event.data.subject: "+event.data.subject);  
               setAudioChannel(event.data.value);
               break;
             default:
@@ -87,7 +88,6 @@
       }
 
       function setAudioChannel(desired_channel){
-        castDebugLogger.debug(LOG_TAG, "event.data.subject: "+event.data.subject);  
         switch(desired_channel){
           case "left":
             castDebugLogger.debug(LOG_TAG, "LEFT");  
