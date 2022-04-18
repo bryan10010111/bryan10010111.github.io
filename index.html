@@ -87,17 +87,19 @@
       }
 
       function setAudioChannel(desired_channel){
-        castDebugLogger.debug(LOG_TAG, desired_channel);
         switch(desired_channel){
           case "left":
+            castDebugLogger.debug(LOG_TAG, "LEFT");  
             // Configure panner -1 left and 1 for right.
             panner.pan.setValueAtTime(-1, context.currentTime)
             break;
           case "right":
+            castDebugLogger.debug(LOG_TAG, "RIGHT");
             // Configure panner -1 left and 1 for right.
             panner.pan.setValueAtTime(1, context.currentTime)
             break;
           case "both":
+            castDebugLogger.debug(LOG_TAG, "CENTER");
             // Configure panner -1 left and 1 for right.
             panner.pan.setValueAtTime(0, context.currentTime)
             break;
