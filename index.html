@@ -92,7 +92,13 @@
               castDebugLogger.debug(LOG_TAG, "event.data.value: "+event.data.value);
               //videoPlayer.stop();
               // Set player's source
-              videoPlayer.src = event.data.value;
+              //videoPlayer.src = event.data.value;
+              
+              var mediaInfo = new cast.framework.messages.MediaInformation();
+              mediaInfo.contentId = event.data.value;
+
+              playerManager.setMediaInformation(mediaInfo, false);
+              
               // Resets the media to the beginning and selects the best available source
               playerManager.load();
               // Begins playback of the media
