@@ -84,26 +84,26 @@
       }
 
       function audioLeft(){
-        console.info("function audioLeft");/*
+        castDebugLogger.debug(LOG_TAG, "function audioLeft");
         // Event handler function to increase panning to the right and left
         // Set the gain values for the left and right channels as desired.
         gainL1.gain.value = 1;
         gainR1.gain.value = 0;
         gainL2.gain.value = 1;
-        gainR2.gain.value = 0;//*/
+        gainR2.gain.value = 0;
       }
 
       function audioRight(){
-        console.info("function audioRight");/*
+        castDebugLogger.debug(LOG_TAG, "function audioRight");
         // Set the gain values for the left and right channels as desired.
         gainL1.gain.value = 0;
         gainR1.gain.value = 1;
         gainL2.gain.value = 0;
-        gainR2.gain.value = 1;//*/
+        gainR2.gain.value = 1;
       }
 
       function audioCenter(){
-        console.info("function audioCenter");/*
+        castDebugLogger.debug(LOG_TAG, "function audioCenter");
         // Set the gain values for the left and right channels as desired.
         gainL1.gain.value = 1;
         gainR1.gain.value = 1;
