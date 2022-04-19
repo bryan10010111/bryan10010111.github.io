@@ -96,6 +96,7 @@
               
               var mediaInfo = new cast.framework.messages.MediaInformation();
               mediaInfo.contentId = event.data.value;
+              mediaInfo.contentType = "video/mp4";
 
               playerManager.setMediaInformation(mediaInfo, false);
               
