@@ -70,6 +70,12 @@
         // connect the merger to the destination now.
         merger.connect(context.destination);
 
+        
+        gainL1.gain.value = 0;
+        gainR1.gain.value = 0;
+        gainL2.gain.value = 0;
+        gainR2.gain.value = 0;
+
         // add an event listener for the HTMLMediaElement's ended event, 
         // then post a message when that event handler has reacted to the event firing
         videoPlayer.onended = (event) => {  
