@@ -19,6 +19,7 @@
     <script>
       // get player reference
       var videoPlayer = document.getElementById('videoPlayer');
+      var playerManager;
       // audio channel
       var gainL1;
       var gainR1;
@@ -29,64 +30,7 @@
       var castDebugLogger;
       const LOG_TAG = 'Tag1';
 
-      function initPlayer(){
-        videoPlayer.crossOrigin = "";
-        
-        
-        var context = new AudioContext();
 
-        var splitter = context.createChannelSplitter(2);
-        var merger1 = context.createChannelMerger(2);
-        var merger2 = context.createChannelMerger(2);
-        var merger = context.createChannelMerger(2);
-
-        // Gain node to control the volume of each channel.
-        gainL1 = context.createGain();
-        gainR1 = context.createGain();
-        gainL2 = context.createGain();
-        gainR2 = context.createGain();
-
-        
-        var audioSource = context.createMediaElementSource(videoPlayer);
-        audioSource.connect(splitter);
-
-        // audioSource is split into its separate channels.  For each channel connect
-        // a different gain node so we can control the volume independently.
-        splitter.connect(gainL1, 0, 0);
-        splitter.connect(gainR1, 1, 0);
-        splitter.connect(gainL2, 0, 0);
-        splitter.connect(gainR2, 1, 0);
-
-        // Combine the output of each gain node back into one stream using the merger.
-        gainL1.connect(merger1, 0, 0);
-        gainR1.connect(merger1, 0, 1);
-        gainL2.connect(merger2, 0, 0);
-        gainR2.connect(merger2, 0, 1);
-
-        merger1.connect(merger, 0, 0);
-        merger2.connect(merger, 0, 1);
-        
-        // connect the merger to the destination now.
-        merger.connect(context.destination);
-
-        
-        gainL1.gain.value = 0;
-        gainR1.gain.value = 0;
-        gainL2.gain.value = 0;
-        gainR2.gain.value = 0;
-
-        // add an event listener for the HTMLMediaElement's ended event, 
-        // then post a message when that event handler has reacted to the event firing
-        videoPlayer.onended = (event) => {  
-          castDebugLogger.debug(LOG_TAG, "videoPlayer onended");  
-        };
-
-        // add an event listener for the HTMLMediaElement's play event, 
-        // then 
-        videoPlayer.onplay = (event) => {
-          castDebugLogger.debug(LOG_TAG, "videoPlayer onplay");  
-        };
-      }
 
       function audioLeft(){
         castDebugLogger.debug(LOG_TAG, "function audioLeft");
@@ -150,9 +94,9 @@
               // Set player's source
               videoPlayer.src = event.data.value;
               // Resets the media to the beginning and selects the best available source
-              videoPlayer.load();
+              playerManager.load();
               // Begins playback of the media
-              videoPlayer.play();
+              playerManager.play();
               break;
             case "set_audio_channel":
               castDebugLogger.debug(LOG_TAG, "event.data.subject: "+event.data.subject);  
@@ -189,10 +133,14 @@
         // Initializes system manager and media manager, so that receiver app can receive requests from senders
         castReceiverContext.start(options);
       }
-
+      
+      function initPlayer(){
+        playerManager = castReceiverContext.getPlayerManager();
+        playerManager.setMediaElement(videoPlayer);
+      }
       function initReceiver(){
-        initPlayer();
         initCastReceiver();
+        initPlayer();
       }
 
      
