@@ -20,13 +20,96 @@
       // get player reference
       var videoPlayer = document.getElementById('videoPlayer');
       // audio channel
-      
-      var panNode;
-      var audioCtx;
+      var gainL1;
+      var gainR1;
+      var gainL2;
+      var gainR2;
 
       var castReceiverContext;
       var castDebugLogger;
       const LOG_TAG = 'Tag1';
+
+      function initPlayer(){
+        //
+        videoPlayer.crossOrigin = "";
+        
+        //  create an instance of the audio context
+        var context = new AudioContext();
+
+        var splitter = context.createChannelSplitter(2);
+        var merger1 = context.createChannelMerger(2);
+        var merger2 = context.createChannelMerger(2);
+        var merger = context.createChannelMerger(2);
+
+        // Gain node to control the volume of each channel.
+        gainL1 = context.createGain();
+        gainR1 = context.createGain();
+        gainL2 = context.createGain();
+        gainR2 = context.createGain();
+
+        
+        var audioSource = context.createMediaElementSource(videoPlayer);
+        audioSource.connect(splitter);
+
+        // audioSource is split into its separate channels.  For each channel connect
+        // a different gain node so we can control the volume independently.
+        splitter.connect(gainL1, 0, 0);
+        splitter.connect(gainR1, 1, 0);
+        splitter.connect(gainL2, 0, 0);
+        splitter.connect(gainR2, 1, 0);
+
+        // Combine the output of each gain node back into one stream using the merger.
+        gainL1.connect(merger1, 0, 0);
+        gainR1.connect(merger1, 0, 1);
+        gainL2.connect(merger2, 0, 0);
+        gainR2.connect(merger2, 0, 1);
+
+        merger1.connect(merger, 0, 0);
+        merger2.connect(merger, 0, 1);
+        
+        // connect the merger to the destination now.
+        merger.connect(context.destination);
+
+        // add an event listener for the HTMLMediaElement's ended event, 
+        // then post a message when that event handler has reacted to the event firing
+        videoPlayer.onended = (event) => {  
+          castDebugLogger.debug(LOG_TAG, "videoPlayer onended");  
+        };
+
+        // add an event listener for the HTMLMediaElement's play event, 
+        // then 
+        video.onplay = (event) => {
+          castDebugLogger.debug(LOG_TAG, "videoPlayer onplay");  
+        };
+      }
+
+      function audioLeft(){
+        // Event handler function to increase panning to the right and left
+        // Set the gain values for the left and right channels as desired.
+        gainL1.gain.value = 1;
+        gainR1.gain.value = 0;
+        gainL2.gain.value = 1;
+        gainR2.gain.value = 0;
+        console.info("audioLeft");
+      }
+
+      function audioRight(){
+        // Set the gain values for the left and right channels as desired.
+        gainL1.gain.value = 0;
+        gainR1.gain.value = 1;
+        gainL2.gain.value = 0;
+        gainR2.gain.value = 1;
+        console.info("audioRight");
+      }
+
+      function audioCenter(){
+        // Set the gain values for the left and right channels as desired.
+        gainL1.gain.value = 1;
+        gainR1.gain.value = 1;
+        gainL2.gain.value = 1;
+        gainR2.gain.value = 1;
+        console.info("audioCenter");
+      }
 
       function initCastReceiver(){
         
@@ -51,8 +134,6 @@
           'cast.framework.events.EventType.MEDIA_STATUS': cast.framework.LoggerLevel.DEBUG
         }
 
-
-        
         // Add an event listener to the defined namespace channel
         castReceiverContext.addCustomMessageListener('urn:x-cast:custom_namespace', event => {     
           
@@ -75,25 +156,25 @@
               switch(event.data.value){
                 case "left":
                   castDebugLogger.debug(LOG_TAG, "LEFT");  
-                  // Configure panner -1 left and 1 for right
-                  // Event handler function to increase panning to the right and left
-                  panNode.pan.setValueAtTime(-1, audioCtx.currentTime);
+                  audioLeft();
                   break;
                 case "right":
                   castDebugLogger.debug(LOG_TAG, "RIGHT");
-                  // Configure panner -1 left and 1 for right
-                  // Event handler function to increase panning to the right and left
-                  panNode.pan.setValueAtTime(1, audioCtx.currentTime);
+                  audioRight();
                   break;
                 case "both":
                   castDebugLogger.debug(LOG_TAG, "CENTER");
-                  // Configure panner -1 left and 1 for right
-                  // Event handler function to increase panning to the right and left
-                  panNode.pan.setValueAtTime(0, audioCtx.currentTime);
+                  audioCenter();
                   break;
               }
               break;
-            default:
+            case "set-playing":
+              if(event.data.value)
+                videoPlayer.play();
+              else
+                videoPlayer.pause();
+              break;
+              default:
           }//*/
         });
 
@@ -104,31 +185,9 @@
         castReceiverContext.start(options);
       }
 
-
-      function initPlayer(){
-        //videoPlayer.crossOrigin = "";
-        //  create an instance of the audio context
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
-        // Create a MediaElementAudioSourceNode
-        // Feed the HTMLMediaElement into it
-        var source = audioCtx.createMediaElementSource(videoPlayer);
-
-        // Create a stereo panner
-        panNode = audioCtx.createStereoPanner();
-
-        // connect the MediaElementAudioSourceNode to the panNode
-        // and the panNode to the destination, so we can play the
-        // music and adjust the panning using the controls
-        source.connect(panNode);
-        panNode.connect(audioCtx.destination);
-
-        
-      }
-
       function initReceiver(){
-        initCastReceiver();
         initPlayer();
+        initCastReceiver();
       }
 
      
